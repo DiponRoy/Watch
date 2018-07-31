@@ -25,8 +25,7 @@ namespace SqlServerTableWatch
 
         protected override void OnModelCreating(DbModelBuilder modelBuilder)
         {
-            modelBuilder.Conventions.Remove<PluralizingTableNameConvention>();
-
+            modelBuilder.Conventions.Remove<PluralizingTableNameConvention>();  /*table name Students to Student*/
         }
     }
 }

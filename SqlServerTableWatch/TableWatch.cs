@@ -55,7 +55,7 @@ namespace SqlServerTableWatch
 
         public void Dispose()
         {
-            SqlTableDependency.Dispose();
+            SqlTableDependency?.Dispose();
         }
     }
 }

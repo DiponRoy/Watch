@@ -10,23 +10,23 @@ namespace SqlServerTableWatch
 {
     class Program
     {
-        private static OutboxDbContext db;
-        private static SmsOutboxWatch watch;
+        private static OutboxDbContext _db;
+        private static SmsOutboxWatch _watch;
 
         static void Main(string[] args)
         {
             try
             {
                 /*db create*/
-                db = new OutboxDbContext();
-                db.Configuration.AutoDetectChangesEnabled = false;
-                db.Sms.ToList();
+                _db = new OutboxDbContext();
+                _db.Configuration.AutoDetectChangesEnabled = false;
+                _db.Sms.ToList();
 
                 /*watch*/
-                watch = new SmsOutboxWatch();
-                watch.Inserted += Watch_Inserted;
-                watch.Updated += Watch_Updated;
-                watch.Deleted += Watch_Deleted;
+                _watch = new SmsOutboxWatch();
+                _watch.Inserted += Watch_Inserted;
+                _watch.Updated += Watch_Updated;
+                _watch.Deleted += Watch_Deleted;
 
                 /*cmd*/
                 Console.Write("Write cmd (start/stop): ");
@@ -38,11 +38,11 @@ namespace SqlServerTableWatch
                     switch (cmd)
                     {
                         case "start":
-                            watch.Start();
+                            _watch.Start();
                             Console.Write("watch started.");
                             break;
                         case "stop":
-                            watch.Stop();
+                            _watch.Stop();
                             Console.Write("watch stoped.");
                             close = true;
                             break;
@@ -77,10 +77,10 @@ namespace SqlServerTableWatch
             PrintEnity("Inserted", entity);
 
             /*send sms*/
-            db.Sms.Attach(entity);
+            _db.Sms.Attach(entity);
             entity.SentDateTimeUtc = DateTime.UtcNow;
-            db.Entry(entity).State = EntityState.Modified;
-            db.SaveChanges();
+            _db.Entry(entity).State = EntityState.Modified;
+            _db.SaveChanges();
             PrintEnity("Sms Process", entity);
         }
 
@@ -96,9 +96,8 @@ namespace SqlServerTableWatch
 
         private static void Dispose()
         {
-            db.Dispose();
-            watch.Dispose();
+            _db?.Dispose();
+            _watch?.Dispose();
         }
-
     }
 }

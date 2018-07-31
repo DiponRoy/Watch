@@ -1,0 +1,2 @@
+﻿Sql Server Table Watch:
+https://github.com/christiandelbianco/monitor-table-change-with-sqltabledependency
